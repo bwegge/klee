@@ -449,6 +449,9 @@ Function *klee::getDirectCallTarget(CallSite cs) {
       if (Function *f = dyn_cast<Function>(ce->getOperand(0)))
         return f;
 
+    if (Function *f = dyn_cast<Function>(ce->stripPointerCasts()))
+      return f;
+    cs->dump();
     // NOTE: This assert may fire, it isn't necessarily a problem and
     // can be disabled, I just wanted to know when and if it happened.
     assert(0 && "FIXME: Unresolved direct target for a constant expression.");
