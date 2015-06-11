@@ -71,3 +71,4 @@ ifeq ($(ENABLE_METASMT),1)
   CXX.Flags += $(metaSMT_INCLUDES)
 endif
 
+CFLAGS := $(filter-out -fstack-protector-strong,$(CFLAGS))
