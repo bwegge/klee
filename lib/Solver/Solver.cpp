@@ -701,7 +701,14 @@ static SolverImpl::SolverRunStatus runAndGetCexForked(::VC vc,
 
   fflush(stdout);
   fflush(stderr);
+
+  sigset_t sig_old, sig_to_block;
+  sigemptyset(&sig_to_block);
+  sigaddset(&sig_to_block, SIGALRM);
+  sigprocmask(SIG_BLOCK, &sig_to_block, &sig_old);
   int pid = fork();
+  sigprocmask(SIG_SETMASK, &sig_old, NULL);
+
   if (pid==-1) {
     fprintf(stderr, "ERROR: fork failed (for STP)");
     if (!IgnoreSolverFailures) 
